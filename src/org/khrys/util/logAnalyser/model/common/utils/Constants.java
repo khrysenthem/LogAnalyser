@@ -16,9 +16,11 @@ public class Constants {
 		ArrayList<MetricType> metricTypes = new ArrayList<MetricType>();
 
 		metricTypes.add(MetricType.AVERAGE);
-		metricTypes.add(MetricType.MIN);
-		metricTypes.add(MetricType.MAX);
+//		metricTypes.add(MetricType.MIN);
+//		metricTypes.add(MetricType.MAX);
 		metricTypes.add(MetricType.MEDIAN);
+		metricTypes.add(MetricType.RANGE);
+		metricTypes.add(MetricType.STD_DEVIATION);
 		
 		DATATYPE_TO_METRICTYPE.put(DataType.INTEGER, metricTypes);
 	}

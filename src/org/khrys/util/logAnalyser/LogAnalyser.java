@@ -99,4 +99,6 @@ public class LogAnalyser {
 		System.out.println("LogAnalyser -f \"myfile\" -s \"transfer: %d ms.\" -o \"outputdir\"");
 		System.out.println("");
 	}
+	
+//	-f "/Users/chs/Documents/Cartell/temp/tomcat.log.2015-07-08" -s "Received XML response, round trip was %d milliseconds." -o "/Users/chs/Documents/Cartell/temp/results"
 }

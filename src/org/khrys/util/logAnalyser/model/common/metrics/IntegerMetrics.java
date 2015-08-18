@@ -36,7 +36,10 @@ public class IntegerMetrics extends Metric {
 			results = range;
 			break;
 		case VARIANCE:
+			results = getVariance();
 			break;
+		case STD_DEVIATION:
+			results = (Double) Math.sqrt(Double.parseDouble(getVariance().toPlainString()));
 		default:
 			break;
 		
@@ -106,17 +109,40 @@ public class IntegerMetrics extends Metric {
 		return median;
 	}
 	
+	// https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Computing_shifted_data
+	public BigDecimal getVariance() {
+		if (values.size()==0)
+			return new BigDecimal(0);
+		BigDecimal K = new BigDecimal((BigInteger)values.get(0));
+		BigDecimal sum = BigDecimal.ZERO;
+		BigDecimal sum_sqr = BigDecimal.ZERO;
+		for (int n = 0; n<values.size();n++) {
+			sum = sum.add(new BigDecimal( (BigInteger)values.get(n) ).subtract(K));
+			sum_sqr = sum_sqr.add(new BigDecimal( (BigInteger)values.get(n) ).subtract(K).pow(2));
+		}
+		BigDecimal variance = (sum_sqr.subtract(sum.pow(2).divide(new BigDecimal(values.size()), 5, RoundingMode.HALF_UP))).divide(new BigDecimal(values.size()), 5, RoundingMode.HALF_UP);
+		return variance;
+	}
+	
 	public String getResultAsString() {
 		String sResults = "";
 		switch (metricType) {
 		case AVERAGE:
 			sResults = ((BigDecimal) results).toPlainString();
 			break;
+		case STD_DEVIATION:
+			sResults = ((Double) results).toString();
+			break;
 		case MEDIAN:
 			sResults = ((BigDecimal) results).toPlainString();
 			break;
 		case RANGE:
-			sResults = (String) results;
+			@SuppressWarnings("unchecked")
+			ArrayList<BigInteger> list = (ArrayList<BigInteger>) results;
+			sResults = ((BigInteger) list.get(0)).toString() + " to " + ((BigInteger) list.get(1)).toString();
+			break;
+		case VARIANCE:
+			sResults = ((BigDecimal) results).toPlainString();
 			break;
 		default:
 			sResults = ((BigInteger) results).toString();
